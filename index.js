@@ -139,14 +139,15 @@ async function main() {
   
   const bot = new MinecraftAFKBot();
   
-  const serverHost = process.env.MC_SERVER_HOST || 'localhost';
-  const serverPort = parseInt(process.env.MC_SERVER_PORT || '19132');
-  const username = process.env.BOT_USERNAME || 'AFKBot';
+  // Use config by default, allow env override
+  const serverHost = process.env.MC_SERVER_HOST || bot.config.host;
+  const serverPort = parseInt(process.env.MC_SERVER_PORT || bot.config.port);
+  const username = process.env.BOT_USERNAME || bot.config.username;
   
   bot.config.username = username;
   
   try {
-    console.log('🔍 Checking if server is Bedrock Edition...');
+    console.log(`🔍 Checking if server is Bedrock Edition (${serverHost}:${serverPort})...`);
     await MinecraftAFKBot.pingServer(serverHost, serverPort);
     
     await bot.connect(serverHost, serverPort);
@@ -181,13 +182,13 @@ module.exports = MinecraftAFKBot;
 // =====================
 // Express server (Render keep-alive)
 // =====================
-const app = express()
+const app = express();
 
 app.get("/", (req, res) => {
-  res.send("🚀 Minecraft AFK Bot is running and alive on Render!")
-})
+  res.send("🚀 Minecraft AFK Bot is running and alive on Render!");
+});
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🌐 Web server running on port ${PORT}`)
-})
+  console.log(`🌐 Web server running on port ${PORT}`);
+});
